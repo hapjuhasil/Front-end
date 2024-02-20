@@ -3,6 +3,8 @@ import 'dart:core';
 import 'package:flutter/material.dart';
 
 String searchText = '';
+List<String> buttonItems = ['거리 순','평점 높은 순','낮은 가격 순','높은 가격 순'];
+String selectedButton = buttonItems[0];
 
 class SearchPage extends StatefulWidget {
   const SearchPage({super.key});
@@ -55,9 +57,32 @@ class SearchPageState extends State<SearchPage> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            FilterButton(),
+                            FilterButton(),// 필터 버튼
+                            ElevatedButton(
+                              onPressed: () {
+
+                              },
+                              style: ElevatedButton.styleFrom(
+                                primary: Colors.white,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(4.71),
+                                ),
+                                side: const BorderSide(color: Color(0xffE0E0E0), width: 0.94),
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    selectedButton,
+                                    style: const TextStyle(fontSize: 16.0,color: Color(0xff656565)),
+                                  ),
+                                  const SizedBox(width: 2.0),
+                                  Image.asset("images/down_arrow.png",width: 24,height: 24,),
+                                ],
+                              ),
+                            ), // 정렬 버튼
                           ],
-                        )
+                        ) // 필터 버튼, 정렬 버튼
                       ],
                     ),
                   );
