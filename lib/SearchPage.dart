@@ -49,6 +49,15 @@ class SearchPageState extends State<SearchPage> {
                             });
                           },
                         ), // 검색창
+                        const SizedBox(
+                          height: 18,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            FilterButton(),
+                          ],
+                        )
                       ],
                     ),
                   );
@@ -56,6 +65,34 @@ class SearchPageState extends State<SearchPage> {
 
             )
         )
+    );
+  }
+}
+//필터 버튼
+class FilterButton extends StatelessWidget{
+  const FilterButton({Key? key}) : super(key: key);
+  @override
+  Widget build(BuildContext context){
+    return ElevatedButton(
+      onPressed: () {},
+      style: ElevatedButton.styleFrom(
+        primary: Colors.white,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(4.71),
+          side: const BorderSide(color: Color(0xffE0E0E0), width: 0.94),
+        ),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Image.asset("images/filter.png",height: 24,width: 24,),
+          const SizedBox(width: 7.0),
+          const Text(
+            "필터",
+            style: TextStyle(fontSize: 16.0,color: Color(0xff656565)),
+          ),
+        ],
+      ),
     );
   }
 }
