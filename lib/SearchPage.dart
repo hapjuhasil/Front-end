@@ -3,8 +3,24 @@ import 'dart:core';
 import 'package:flutter/material.dart';
 
 String searchText = '';
+
 List<String> buttonItems = ['거리 순','평점 높은 순','낮은 가격 순','높은 가격 순'];
 String selectedButton = buttonItems[0];
+
+List<String> titleList = [];
+List<String> hapjusilImageList = [];
+List<Hapjusil> hapjusilList = [];
+
+class Hapjusil{
+  late String image;
+  late String place;
+  late String name;
+  late double score;
+  late int scoreCnt;
+  late bool heart;
+
+  Hapjusil(this.image, this.place, this.name, this.score, this.scoreCnt, this.heart);
+}
 
 class SearchPage extends StatefulWidget {
   const SearchPage({super.key});
@@ -82,7 +98,20 @@ class SearchPageState extends State<SearchPage> {
                               ),
                             ), // 정렬 버튼
                           ],
-                        ) // 필터 버튼, 정렬 버튼
+                        ), // 필터 버튼, 정렬 버튼
+                        Expanded(
+                            child: GridView.builder(
+                              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 2, // 열 수 지정
+                                mainAxisSpacing: 113, // 수직 간격
+                                crossAxisSpacing: 10, // 수평 간격
+                              ),
+                              itemCount: titleList.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                return SearchListItem(index: index);
+                              }
+                            ),
+                        )
                       ],
                     ),
                   );
@@ -120,4 +149,96 @@ class FilterButton extends StatelessWidget{
       ),
     );
   }
+}
+
+//검색결과 리스트의 아이템 위젯
+class SearchListItem extends StatelessWidget{
+  final int index;
+  const SearchListItem({super.key, required this.index});
+  @override
+  Widget build(BuildContext context) {
+    return Wrap(
+      direction: Axis.horizontal,
+      alignment: WrapAlignment.center,
+      runSpacing: 8,
+      children:[
+        GestureDetector(
+          onTap: () {
+            // 카드를 클릭했을 때 처리할 동작 구현
+            // 예를 들어 ContentPage로 이동하는 코드 추가
+            // Navigator.push(
+            //   context,
+            //   MaterialPageRoute(builder: (context) => ContentPage()),
+            // );
+          },
+          child:Card(
+              elevation: 3,
+              shape: const RoundedRectangleBorder(
+                  borderRadius:
+                  BorderRadius.all(Radius.elliptical(20, 20))
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Stack(
+                          children:[
+                            Image.asset(hapjusilList[index].image),
+                            Positioned(
+                              bottom: 10,
+                              right: 12,
+                              child:Column(
+                                children:[
+                                  if(hapjusilList[index].heart)
+                                    Image.asset('images/heart_true.png')
+                                  else
+                                    Image.asset('images/heart_false.png')
+                                ],
+                              ),
+                            )
+                          ]
+                      ),
+                    ],
+                  ), // 즐겨찾기 표시
+                  const SizedBox(height: 4,),
+                  Text(
+                    hapjusilList[index].place,
+                    style: const TextStyle(
+                        fontSize: 11
+                    ),
+                  ), // 위치
+                  const SizedBox(height: 7,),
+                  Text(
+                    hapjusilList[index].name,
+                    style: const TextStyle(
+                        fontSize: 13
+                    ),
+                  ), // 합주실 이름
+                  const SizedBox(height: 7,),
+                  Row(
+                    children: [
+                      Image.asset('images/star.png'),
+                      const SizedBox(width: 2,),
+                      Text(
+                          hapjusilList[index].score.toString()
+                      ),
+                      const SizedBox(width: 2,),
+                      Text(
+                        '(${hapjusilList[index].scoreCnt})',
+                        style: const TextStyle(
+                            fontSize: 12
+                        ),
+                      )
+                    ],
+                  ), // 평점
+                ],
+              )
+          ),
+        ),
+      ],
+    );
+  }
+
 }
