@@ -76,7 +76,83 @@ class SearchPageState extends State<SearchPage> {
                             FilterButton(),// 필터 버튼
                             ElevatedButton(
                               onPressed: () {
-
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text("정렬",style: TextStyle(fontSize: 13,fontWeight: FontWeight.bold,color: Colors.black),),
+                                        GestureDetector(
+                                            onTap: () {
+                                              setState(() {
+                                                selectedButton = buttonItems[0];
+                                                ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                                              });
+                                            },
+                                            child: Column(
+                                              children: [
+                                                if(selectedButton==buttonItems[0])
+                                                  Text(buttonItems[0],style: TextStyle(fontSize: 12,color: Colors.purple),)
+                                                else
+                                                  Text(buttonItems[0],style: TextStyle(fontSize: 12,color: Colors.black),)
+                                              ],
+                                            )
+                                        ),
+                                        GestureDetector(
+                                            onTap: () {
+                                              setState(() {
+                                                selectedButton = buttonItems[1];
+                                                ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                                              });
+                                            },
+                                            child: Column(
+                                              children: [
+                                                if(selectedButton==buttonItems[1])
+                                                  Text(buttonItems[1],style: TextStyle(fontSize: 12,color: Colors.purple),)
+                                                else
+                                                  Text(buttonItems[1],style: TextStyle(fontSize: 12,color: Colors.black),)
+                                              ],
+                                            )
+                                        ),
+                                        GestureDetector(
+                                            onTap: () {
+                                              setState(() {
+                                                selectedButton = buttonItems[2];
+                                                ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                                              });
+                                            },
+                                            child: Column(
+                                              children: [
+                                                if(selectedButton==buttonItems[2])
+                                                  Text(buttonItems[2],style: TextStyle(fontSize: 12,color: Colors.purple),)
+                                                else
+                                                  Text(buttonItems[2],style: TextStyle(fontSize: 12,color: Colors.black),)
+                                              ],
+                                            )
+                                        ),
+                                        GestureDetector(
+                                            onTap: () {
+                                              setState(() {
+                                                selectedButton = buttonItems[3];
+                                                ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                                              });
+                                            },
+                                            child: Column(
+                                              children: [
+                                                if(selectedButton==buttonItems[3])
+                                                  Text(buttonItems[3],style: TextStyle(fontSize: 12,color: Colors.purple),)
+                                                else
+                                                  Text(buttonItems[3],style: TextStyle(fontSize: 12,color: Colors.black),)
+                                              ],
+                                            )
+                                        ),
+                                      ],
+                                    ),
+                                    duration: Duration(days: 365),
+                                    backgroundColor: Colors.white,
+                                  ),
+                                );
                               },
                               style: ElevatedButton.styleFrom(
                                 primary: Colors.white,
