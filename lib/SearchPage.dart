@@ -7,9 +7,57 @@ String searchText = '';
 List<String> buttonItems = ['거리 순','평점 높은 순','낮은 가격 순','높은 가격 순'];
 String selectedButton = buttonItems[0];
 
-List<String> titleList = [];
-List<String> hapjusilImageList = [];
-List<Hapjusil> hapjusilList = [];
+List<String> titleList = ['그라운드합주실 홍대 1호점', '그라운드합주실 홍대 2호점', '그라운드합주실 홍대 3호점', '그라운드합주실 홍대 4호점','그라운드합주실 홍대 5호점', '그라운드합주실 홍대 6호점',];
+List<String> hapjusilImageList = ['images/1','images/2','images/1','images/2',];
+List<Hapjusil> hapjusilList = [
+  Hapjusil(
+      'images/1.png',
+      '서울 마포교 동교로',
+      '그라운드합주실 홍대 1호점',
+      4.62,
+      1,
+      false
+  ),
+  Hapjusil(
+      'images/2.png',
+      '서울 마포교 동교로',
+      '그라운드합주실 홍대 2호점',
+      4.62,
+      1,
+      true
+  ),
+  Hapjusil(
+      'images/1.png',
+      '서울 마포교 동교로',
+      '그라운드합주실 홍대 3호점',
+      4.62,
+      1,
+      false
+  ),
+  Hapjusil(
+      'images/2.png',
+      '서울 마포교 동교로',
+      '그라운드합주실 홍대 4호점',
+      4.62,
+      1,
+      false
+  ),Hapjusil(
+      'images/1.png',
+      '서울 마포교 동교로',
+      '그라운드합주실 홍대 3호점',
+      4.62,
+      1,
+      false
+  ),
+  Hapjusil(
+      'images/2.png',
+      '서울 마포교 동교로',
+      '그라운드합주실 홍대 4호점',
+      4.62,
+      1,
+      false
+  )
+];
 
 class Hapjusil{
   late String image;
@@ -184,7 +232,17 @@ class SearchPageState extends State<SearchPage> {
                               ),
                               itemCount: titleList.length,
                               itemBuilder: (BuildContext context, int index) {
-                                return SearchListItem(index: index);
+                                // 검색 기능, 검색어가 있을 경우
+                                if (searchText.isNotEmpty &&
+                                    !titleList[index]
+                                        .toLowerCase()
+                                        .contains(searchText.toLowerCase())) {
+                                  return SizedBox.shrink();
+                                }
+                                // 검색어가 없을 경우, 모든 항목 표시
+                                else {
+                                  return SearchListItem(index: index);
+                                }
                               }
                             ),
                         )
@@ -192,7 +250,6 @@ class SearchPageState extends State<SearchPage> {
                     ),
                   );
                 }
-
             )
         )
     );
