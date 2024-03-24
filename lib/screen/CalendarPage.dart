@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '/const/colors.dart';
+import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 //캘린더페이지
@@ -8,6 +9,24 @@ class CalendarPage extends StatefulWidget {
 
   @override
   State<CalendarPage> createState() => CalendarState();
+}
+
+class Meeting {
+  Meeting({
+    required this.eventName,
+    required this.from,
+    required this.to,
+    required this.background,
+    required this.isAllDay,
+    this.notes,
+  });
+
+  String eventName;
+  DateTime from;
+  DateTime to;
+  Color background;
+  bool isAllDay;
+  String? notes;
 }
 
 class MeetingDataSource extends CalendarDataSource {
@@ -39,19 +58,28 @@ class MeetingDataSource extends CalendarDataSource {
   bool isAllDay(int index) {
     return appointments![index].isAllDay;
   }
-}
 
-class Meeting {
-  Meeting(this.eventName, this.from, this.to, this.background, this.isAllDay);
-
-  String eventName;
-  DateTime from;
-  DateTime to;
-  Color background;
-  bool isAllDay;
+  @override
+  Object? convertAppointmentToObject(
+      Object? customData, Appointment appointment) {
+    return Meeting(
+      eventName: appointment.subject,
+      from: appointment.startTime,
+      to: appointment.endTime,
+      background: appointment.color,
+      isAllDay: appointment.isAllDay,
+    ) as Object?;
+  }
 }
 
 class CalendarState extends State<CalendarPage> {
+  String? _subjectText = '',
+      _startTimeText = '',
+      _endTimeText = '',
+      _dateText = '',
+      _timeDetails = '';
+  Color? _headerColor, _viewHeaderColor, _calendarColor;
+
   List<Meeting> _getDataSource() {
     final List<Meeting> meetings = <Meeting>[];
     final DateTime today = DateTime.now();
@@ -59,7 +87,19 @@ class CalendarState extends State<CalendarPage> {
         DateTime(today.year, today.month, today.day, 9, 0, 0);
     final DateTime endTime = startTime.add(const Duration(hours: 2));
     meetings.add(Meeting(
-        'Conference', startTime, endTime, const Color(0xFF0F8644), false));
+      eventName: '홍대 오렌지',
+      from: startTime,
+      to: endTime,
+      background: const Color(0xFF3974FD),
+      isAllDay: false,
+    ));
+    meetings.add(Meeting(
+      eventName: '건대 오렌지', // 'eventName' 매개변수에 대한 인자를 추가합니다.
+      from: startTime,
+      to: endTime,
+      background: const Color(0xFFFDBE01),
+      isAllDay: false,
+    ));
     return meetings;
   }
 
@@ -115,6 +155,44 @@ class CalendarState extends State<CalendarPage> {
               ),
             );
           },
+          onTap: calendarTapped,
         ));
+  }
+
+  void calendarTapped(CalendarTapDetails details) {
+    // 선택된 날짜를 가져옵니다.
+    final DateTime selectedDate = details.date!;
+
+    // 선택된 날짜의 약속들을 필터링합니다.
+    final List<Meeting> selectedAppointments = _getDataSource()
+        .where((Meeting meeting) =>
+            meeting.from.day == selectedDate.day &&
+            meeting.from.month == selectedDate.month &&
+            meeting.from.year == selectedDate.year)
+        .toList();
+
+    // 약속 이름만 나열하는 대화상자를 표시합니다.
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(DateFormat('yyyy-MM-dd').format(selectedDate)),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: selectedAppointments
+                .map((meeting) => Text(meeting.eventName))
+                .toList(),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text('닫기'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 }
