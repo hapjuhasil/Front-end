@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hapju/screen/CalendarPage.dart';
+import '/view/calendarView.dart';
 import '/const/colors.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
@@ -44,7 +44,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   final List<Widget> _navIndex = [
     MainPage(),
-    CalendarPage(),
+    CalendarView(),
     SearchPage(),
     LikePage(),
     MyPage(),
